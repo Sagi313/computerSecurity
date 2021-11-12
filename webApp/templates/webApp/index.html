@@ -1,0 +1,17 @@
+{% extends 'webApp/base.html' %} {% block title %}Comunication_LTD{% endblock %}
+{% block pageTitle %}Comunication_LTD{% endblock %} 
+
+
+
+{% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h1>Secret</h1>
+
+{% endblock %}

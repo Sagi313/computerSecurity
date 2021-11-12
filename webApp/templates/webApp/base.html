@@ -1,14 +1,21 @@
 <html>
   <head>
-    <style type="text/css">
-    </style>
+    {% load static %}
     <title>{% block title %}Comunication_LTD{% endblock %}</title>
+      {% if user.is_authenticated == false %}
+        <meta http-equiv="refresh" content="1; URL=/login" />
+      {% endif %}
   </head>
+  <link rel="stylesheet" href="{% static 'webApp/base.css' %}" />
   <body>
     <div id="content, name=" content, class="main">
-          <h1 class="mt-2">{% block pageTitle %}{% endblock %}</h1>
-          <hr class="mt-0 mb-4" />
+          <h1 className="page-title">{% block pageTitle %}{% endblock %}</h1>
+          <hr/>
+          {% if user.is_authenticated %}
           {% block content %} {% endblock %}
+          {% endif %}
+
+          {% block public_content %} {% endblock %}
         </div>
       </div>
     </div>
