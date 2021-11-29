@@ -1,9 +1,8 @@
 {% extends 'webApp/base.html' %} {% block title %}Comunication_LTD{% endblock %}
-{% block pageTitle %}Comunication_LTD{% endblock %} 
-
-
+{% block pageTitle %}Comunication LTD{% endblock %} 
 
 {% block content %}
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -12,6 +11,46 @@
     </ul>
 {% endif %}
 
-<h1>Secret</h1>
+
+<form method="post" ,action="#">
+    {% csrf_token %}
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Costumer name</th>
+            <th>Email</th>
+            <th>Info</th>
+            <th>Delete</th>
+        </tr>           
+
+        {% for costumer in costumers %}
+        <tr>
+            <td>{{costumer.id}}</td>
+            <td>{{costumer.name}}</td>
+            <td>{{costumer.email}}</td>
+            <td>{{costumer.info}}</td>
+            <td><input type="checkbox" name="delete-costumer_{{costumer.id}}"></button></td>
+        </tr>       
+        {%endfor%}
+    </table>
+    <button type="submit"  name="delete_costumers" value='delete_costumers'>Delete Selected</button>
+</form>
+
+<br>
+<h3>Add new costumer</h3>
+<form method="post" ,action="#">
+    {% csrf_token %}
+    <a>Costumer name</a>
+    <input type="text" name="costumer_name" maxlength='256' required>
+    
+    <a>Email</a>
+    <input type="email" name="costumer_email" maxlength='256' required>
+    
+    <a>Info</a>
+    <input type="text" name="costumer_info" maxlength='256' required>
+    
+    <button type="submit"  name="submit" value='submit_data'>Submit</button>
+    <button type="reset"  name="cancel" value='cancel_form'>Cancel</button>
+</form>
 
 {% endblock %}
