@@ -1,8 +1,73 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
+from webApp.core import is_input_text_valid
+from .forms import RegisterForm
+from webApp.models import Costumer
 
 
-# Create your views here.
 
 def index(response):
-    return HttpResponse("Hello, world.")
+
+    if response.method == 'POST':
+        if response.POST.get("submit"):
+            if not is_input_text_valid(response.POST.get('costumer_name'),256):
+                messages.success(response, f'Costumer name is invalid')
+                return redirect('/')
+            elif not is_input_text_valid(response.POST.get('costumer_email'),256):
+                messages.success(response, f'Costumer email is invalid')
+                return redirect('/')
+            elif not is_input_text_valid(response.POST.get('costumer_info'),256):
+                messages.success(response, f'Costumer info is invalid')
+                return redirect('/')
+
+            new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'), email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
+            new_costumer.save()
+
+            messages.success(response, f'Costumer {new_costumer.name} added succuessfully')
+
+
+        if response.POST.get("delete_costumers"):
+            for key in response.POST:
+                if "delete-costumer_" in key:
+                    to_delete_id = key.split("_")[1]
+                    to_delete_costumer = Costumer.objects.get(id=int(to_delete_id))
+                    costumer_name = to_delete_costumer.name
+                    to_delete_costumer.delete()
+
+                    messages.success(response, f'Costumer {costumer_name} was deleted')
+
+        return redirect('/')
+    
+
+    all_costumers = Costumer.objects.all()
+    relevant_costumers = [costumer for costumer in all_costumers if costumer.sales_person == response.user]
+
+    return render(response, "webApp/index.html", {'costumers': relevant_costumers})
+
+
+def signin(response):
+    if response.POST.get("signin_submit"):
+        from django.contrib.auth import authenticate
+        user = authenticate(username=response.POST.get('user-name'), password=response.POST.get('password'))
+        if user is not None:
+            pass
+        else:
+            messages.error(response, 'Failed to login. Please check username or password')
+        
+
+    return render(response, "webApp/signin.html", {})
+
+
+def register(response):
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+
+        return redirect("/")
+    else:
+        form = RegisterForm()
+
+    return render(response, "registration/register.html", {"form":form})
