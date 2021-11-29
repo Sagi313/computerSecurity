@@ -1,67 +1,21 @@
 <html>
   <head>
     {% load static %}
-    <link rel="icon"href="{% static 'guiControl/favicon-32x32.png' %}">
-    <style type="text/css">
-      .sidenav {
-        height: 100%;
-        width: 160px;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: #111;
-        overflow-x: hidden;
-        padding-top: 20px;
-      }
-      .sidenav a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        color: #818181;
-        font-size: 25px;
-        display: block;
-      }
-
-      .sidenav a:hover {
-        color: #f1f1f1;
-      }
-
-      .main {
-        margin-left: 160px;
-        padding: 0px 10px;
-      }
-    </style>
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-
-    <title>{% block title %}Sagi's Website{% endblock %}</title>
+    <title>{% block title %}Comunication_LTD{% endblock %}</title>
+      {% if user.is_authenticated == false %}
+        <meta http-equiv="refresh" content="1; URL=/login" />
+      {% endif %}
   </head>
+  <link rel="stylesheet" href="{% static 'webApp/base.css' %}" />
   <body>
-    <div class="sidenav">
-      <a href="/">Home</a>
-      <a href="/lights/">Lights</a>
-      <a href="/fans/">Fans</a>
-      <a href="/misting/">Misting</a>
-      <a href="/other_devices/">Other</a>
-      <a href="/devices/">Devices</a>
-      <a href="/daemon_logs/">Logs</a>
-      <a href="/settings/">Settings</a>
-    </div>
-
     <div id="content, name=" content, class="main">
-      <div class="row justify-content-center">
-        <div class="col-8">
-          <h1 class="mt-2">{% block pageTitle %}{% endblock %}</h1>
-          <hr class="mt-0 mb-4" />
+          <h1 className="page-title">{% block pageTitle %}{% endblock %}</h1>
+          <hr/>
+          {% if user.is_authenticated %}
           {% block content %} {% endblock %}
+          {% endif %}
+
+          {% block public_content %} {% endblock %}
         </div>
       </div>
     </div>
