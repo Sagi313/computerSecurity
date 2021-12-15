@@ -12,7 +12,7 @@
           <h1 className="page-title">{% block pageTitle %}{% endblock %}</h1>
           <hr/>
           {% if user.is_authenticated %}
-          {% block content %} {% endblock %}
+            {% block content %} {% endblock %}
           {% endif %}
 
           {% block public_content %} {% endblock %}

@@ -1,13 +1,15 @@
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render, redirect
-
 from webApp.core import is_input_text_valid
 from .forms import RegisterForm
 from webApp.models import Costumer
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required(login_url='/login/')
 def index(response):
 
     if response.method == 'POST':
@@ -47,26 +49,17 @@ def index(response):
     return render(response, "webApp/index.html", {'costumers': relevant_costumers})
 
 
-def signin(response):
-    if response.POST.get("signin_submit"):
-        from django.contrib.auth import authenticate
-        user = authenticate(username=response.POST.get('user-name'), password=response.POST.get('password'))
-        if user is not None:
-            pass
-        else:
-            messages.error(response, 'Failed to login. Please check username or password')
-        
-
-    return render(response, "webApp/signin.html", {})
-
-
 def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
+        print(f"respone {response.POST}",flush=True)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],)
+            login(response, new_user)
 
-        return redirect("/")
+            return redirect("/")
     else:
         form = RegisterForm()
 
