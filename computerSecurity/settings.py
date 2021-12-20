@@ -107,6 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
