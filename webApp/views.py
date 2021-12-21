@@ -29,7 +29,6 @@ def index(response):
 
             messages.success(response, f'Costumer {new_costumer.name} added succuessfully')
 
-
         if response.POST.get("delete_costumers"):
             for key in response.POST:
                 if "delete-costumer_" in key:
