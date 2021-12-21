@@ -24,8 +24,7 @@ SECRET_KEY = 'django-insecure-qz#n^s@ay&q&n%4^f071ria9i_&$aezvk^bct_sfskr4jr_m7t
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = '/' # URL redirecting after a successful authentication
