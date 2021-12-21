@@ -51,9 +51,10 @@
     
     <button type="submit"  name="submit" value='submit_data'>Submit</button>
     <button type="reset"  name="cancel" value='cancel_form'>Cancel</button>
+    <button onclick="document.location='/password_change'">Change Password</button>
+    <button onclick="document.location='/Login'">Logout</button>
+    
 </form>
-<div class="d-flex flex-column">
-    <a class='m-auto' href="{% url 'password_change' %}">Change password</a>
- </div>
+
 
 {% endblock %}

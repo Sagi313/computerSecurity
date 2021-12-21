@@ -12,8 +12,9 @@ Login Here
 		{{form|crispy}}
 		<p>Don't have an accoount? Create one <a href="/register">here</a></p>
 		<button type="submit" class="btn btn-success">Login</button>	
+		<button onclick="document.location='/password_reset'">Forgot Password</button>
+		
+		
     </form>
-	<div class="d-flex flex-column">
-		<a class='m-auto' href="{% url 'password_reset' %}">Forgot password</a>
-	 </div>
+	
 {% endblock %}
