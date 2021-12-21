@@ -1,10 +1,13 @@
 body {
-  margin: auto;
-  width: 60%;
-  border: 3px solid green;
-  padding: 10px;
+  background-color: #A3CEF1;
+  height: 1000px;
 }
 
-table, tr, td {
-  border: 1px solid black;
+.container {
+  min-height:100%;
+}
+
+.logo-img{
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
