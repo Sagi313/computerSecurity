@@ -1,56 +1,80 @@
-{% extends 'webApp/base.html' %} {% block title %}Comunication_LTD{% endblock %}
-{% block pageTitle %}Comunication LTD{% endblock %} 
+{% extends 'webApp/base.html' %} {% block title %}Communication_LTD{% endblock %}
+{% block pageTitle %}Costumer Management{% endblock %}
 
 {% block content %}
 
-{% if messages %}
-    <ul class="messages">
+    {% if messages %}
         {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% if message.tags == "success" %}
+                <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% elif message.tags == "error" %}
+                <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
         {% endfor %}
-    </ul>
-{% endif %}
+    {% endif %}
 
 
-<form method="post" ,action="#">
-    {% csrf_token %}
-    <table style="width:100%">
-        <tr>
-            <th>ID</th>
-            <th>Costumer name</th>
-            <th>Email</th>
-            <th>Info</th>
-            <th>Delete</th>
-        </tr>           
+    <form method="post" ,action="#">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Costumer name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Info</th>
+                <th scope="col">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
 
-        {% for costumer in costumers %}
-        <tr>
-            <td>{{costumer.id}}</td>
-            <td>{{costumer.name}}</td>
-            <td>{{costumer.email}}</td>
-            <td>{{costumer.info}}</td>
-            <td><input type="checkbox" name="delete-costumer_{{costumer.id}}"></button></td>
-        </tr>       
-        {%endfor%}
-    </table>
-    <button type="submit"  name="delete_costumers" value='delete_costumers'>Delete Selected</button>
-</form>
+            {% for costumer in costumers %}
 
-<br>
-<h3>Add new costumer</h3>
-<form method="post" ,action="#">
-    {% csrf_token %}
-    <a>Costumer name</a>
-    <input type="text" name="costumer_name" maxlength='256' required>
-    
-    <a>Email</a>
-    <input type="email" name="costumer_email" maxlength='256' required>
-    
-    <a>Info</a>
-    <input type="text" name="costumer_info" maxlength='256' required>
-    
-    <button type="submit"  name="submit" value='submit_data'>Submit</button>
-    <button type="reset"  name="cancel" value='cancel_form'>Cancel</button>
-</form>
+                <tr>
+                    <th scope="row">{{ costumer.id }}</th>
+                    <td>{{ costumer.name }}</td>
+                    <td>{{ costumer.email }}</td>
+                    <td>{{ costumer.info }}</td>
+                    <td><input type="checkbox" class="form-check-input mt-0" name="delete-costumer_{{ costumer.id }}">
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+        </div>
+        <button type="submit" class="btn btn-dark" name="delete_costumers" value='delete_costumers'>Delete Selected
+        </button>
+    </form>
+
+    <br>
+    <h3>Add new costumer</h3>
+    <form method="post" ,action="#">
+        {% csrf_token %}
+        <div class="form-input-fields">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Costumer name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Full Name"
+                       name="costumer_name" maxlength='256' required>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"
+                       name="costumer_email" maxlength='256' required>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Info</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="costumer_info"
+                          maxlength='256' required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-dark" name="submit" value='submit_data'>Submit</button>
+            <button type="reset" class="btn btn-light" name="cancel" value='cancel_form'>Cancel</button>
+        </div>
+    </form>
 
 {% endblock %}
