@@ -1,0 +1,13 @@
+{
+  "len": 10,
+  "has_to_Include": [
+    "[A-Z]",
+    "[a-z]",
+    "[0-9]",
+    "[!@#$%^&*()]"
+  ],
+  "dict_pass": ["Hello1!","Password1!", "P@ssword1"],
+  "history": 3,
+  "Max_retries": 3
+}
+

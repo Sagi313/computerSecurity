@@ -8,27 +8,25 @@ from webApp.models import Costumer
 from django.contrib.auth.decorators import login_required
 
 
-
 @login_required(login_url='/login/')
 def index(response):
-
     if response.method == 'POST':
         if response.POST.get("submit"):
-            if not is_input_text_valid(response.POST.get('costumer_name'),256):
+            if not is_input_text_valid(response.POST.get('costumer_name'), 256):
                 messages.success(response, f'Costumer name is invalid')
                 return redirect('/')
-            elif not is_input_text_valid(response.POST.get('costumer_email'),256):
+            elif not is_input_text_valid(response.POST.get('costumer_email'), 256):
                 messages.success(response, f'Costumer email is invalid')
                 return redirect('/')
-            elif not is_input_text_valid(response.POST.get('costumer_info'),256):
+            elif not is_input_text_valid(response.POST.get('costumer_info'), 256):
                 messages.success(response, f'Costumer info is invalid')
                 return redirect('/')
 
-            new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'), email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
+            new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'),
+                                    email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
             new_costumer.save()
 
             messages.success(response, f'Costumer {new_costumer.name} added succuessfully')
-
 
         if response.POST.get("delete_costumers"):
             for key in response.POST:
@@ -41,7 +39,6 @@ def index(response):
                     messages.success(response, f'Costumer {costumer_name} was deleted')
 
         return redirect('/')
-    
 
     all_costumers = Costumer.objects.all()
     relevant_costumers = [costumer for costumer in all_costumers if costumer.sales_person == response.user]
@@ -52,15 +49,15 @@ def index(response):
 def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
-        print(f"respone {response.POST}",flush=True)
+        #print(f"respone {response.POST}", flush=True)
         if form.is_valid():
-            new_user = form.save()
+            form.save()
             new_user = authenticate(username=form.cleaned_data['username'],
-                                    password=form.cleaned_data['password1'],)
+                                    password=form.cleaned_data['password1'], )
             login(response, new_user)
 
             return redirect("/")
     else:
         form = RegisterForm()
 
-    return render(response, "registration/register.html", {"form":form})
+    return render(response, "registration/register.html", {"form": form})
