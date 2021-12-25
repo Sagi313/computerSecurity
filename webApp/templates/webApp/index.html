@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Costumer name</th>
+                <th scope="col">Customer name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Info</th>
                 <th scope="col">Delete</th>
@@ -49,12 +49,12 @@
     </form>
 
     <br>
-    <h3>Add new costumer</h3>
+    <h3>Add new customer</h3>
     <form method="post" ,action="#">
         {% csrf_token %}
         <div class="form-input-fields">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Costumer name</label>
+                <label for="exampleFormControlInput1" class="form-label">Customer name</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Full Name"
                        name="costumer_name" maxlength='256' required>
             </div>

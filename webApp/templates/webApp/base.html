@@ -52,10 +52,16 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            {% if user.is_authenticated == True %}
+            <form class="d-flex" method="post">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       name="search-bar">
+                <button class="btn btn-outline-success" type="submit" name="search-bar-submit"
+                        value="search-bar-submit">Search
+                </button>
             </form>
+            {% endif %}
         </div>
     </div>
 </nav>
@@ -88,7 +94,6 @@
             <!--Grid column-->
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Information</h5>
-
                 <p>
                     This site is part of the Computer-Security course project. It
                     Allows us to test various attack vectors and exploit the site.
@@ -114,7 +119,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        <p class="text-dark">© 2020 Copyright: Sagi Buria, Lior Nissan, Viktor Dabush, Noa, Timor</p>
+        <p class="text-dark">© 2020 Copyright: Sagi Buria, Lior Nissan, Viktor Dabush, Noa Mishraki, Timor</p>
     </div>
     <!-- Copyright -->
 </footer>
