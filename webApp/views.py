@@ -1,11 +1,13 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login , logout
+from django.http import response
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from webApp.core import is_input_text_valid
-from .forms import RegisterForm
+from .forms import RegisterForm , PasswordChangingForm
 from webApp.models import Costumer
 from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -63,3 +65,33 @@ def register(response):
         form = RegisterForm()
 
     return render(response, "registration/register.html", {"form":form})
+
+
+    
+def password_change(response):
+    if response.method == "POST":
+        try:
+            form = PasswordChangingForm(response.POST)
+            print(f"respone {response.POST}",flush=True)
+            print(response.user, flush=True)
+            new_user = authenticate(username=response.user,password=response.POST.get('new_password'),)
+            login(response, new_user)
+            messages.success(response, f'Password changed succuessfuly. Please go back to main page')
+        except:
+            messages.error(response, f'Failed to change password')
+
+
+    else:
+        form = PasswordChangingForm(response.POST)
+
+    return render(response, "registration/change-password.html", {"form":form})
+
+
+def logout_user(request):
+	logout(request)
+	return redirect('login')
+
+
+
+
+
