@@ -8,7 +8,6 @@ from webApp.models import Costumer
 from django.contrib.auth.decorators import login_required
 
 
-
 @login_required(login_url='/login/')
 def index(response):
 
@@ -27,7 +26,7 @@ def index(response):
             new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'), email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
             new_costumer.save()
 
-            messages.success(response, f'Costumer {new_costumer.name} added succuessfully')
+            messages.success(response, f'Costumer {new_costumer.name} added successfully')
 
         if response.POST.get("delete_costumers"):
             for key in response.POST:
@@ -72,6 +71,7 @@ def search_results(response):   # This view has the search bar who is vulnerable
     current_user = response.user
     query = response.POST.get('search-bar')
     if query:
+        # To exploit this input field, enter "t%' -- " in the search bar (without the quotes)
         sql = f"SELECT * FROM webapp_costumer WHERE name LIKE '%{query}%' AND sales_person_id = {current_user.id};"
     
     try:
@@ -87,6 +87,7 @@ def search_results(response):   # This view has the search bar who is vulnerable
         cursor.execute(sql)
 
         results = cursor.fetchall()
+
     except:
         results = []
 

@@ -13,7 +13,7 @@
     {% load static %}
     <title>{% block title %}Communication_LTD{% endblock %}</title>
     {% if user.is_authenticated == false %}
-        <meta http-equiv="refresh" content="1; URL=/login"/>
+    <meta http-equiv="refresh" content="1; URL=/login"/>
     {% endif %}
 </head>
 <link rel="stylesheet" href="{% static 'webApp/base.css' %}"/>
@@ -53,6 +53,8 @@
                 </li>
             </ul>
             {% if user.is_authenticated == True %}
+            <a class="nav-link disabled">{{ user }}</a>
+
             <form class="d-flex" method="post">
                 {% csrf_token %}
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
@@ -74,7 +76,7 @@
         <h1 class="page-title">{% block pageTitle %}{% endblock %}</h1>
         <hr/>
         {% if user.is_authenticated %}
-            {% block content %} {% endblock %}
+        {% block content %} {% endblock %}
         {% endif %}
 
         {% block public_content %} {% endblock %}
@@ -86,6 +88,7 @@
     </body>
 </div>
 
+<br>
 <footer class="bg-light text-center text-lg-start">
     <!-- Grid container -->
     <div class="container p-4">
@@ -97,7 +100,7 @@
                 <p>
                     This site is part of the Computer-Security course project. It
                     Allows us to test various attack vectors and exploit the site.
-                    To see the vulnerabilities, checkout the documentaions
+                    To see the vulnerabilities, checkout the documentations
                 </p>
             </div>
             <!--Grid column-->
