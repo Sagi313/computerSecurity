@@ -8,5 +8,6 @@
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Register</button>
+        <button class="btn btn-success" onclick="location.href = '/login'">Go back to Login</button>
     </form>
 {% endblock %}
