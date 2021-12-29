@@ -67,7 +67,6 @@ def register(response):
     return render(response, "registration/register.html", {"form":form})
 
 
-    
 def password_change(response):
     if response.method == "POST":
         try:
