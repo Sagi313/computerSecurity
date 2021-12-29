@@ -26,7 +26,7 @@ def index(response):
             new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'), email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
             new_costumer.save()
 
-            messages.success(response, f'Costumer {new_costumer.name} added succuessfully')
+            messages.success(response, f'Costumer {new_costumer.name} added successfully')
 
         if response.POST.get("delete_costumers"):
             for key in response.POST:
@@ -37,6 +37,10 @@ def index(response):
                     to_delete_costumer.delete()
 
                     messages.success(response, f'Costumer {costumer_name} was deleted')
+
+        ### VULENARABLE INPUT FIELD ###
+        if response.POST.get('search-bar-submit'):
+            return search_results(response)
 
         return redirect('/')
 
@@ -49,7 +53,6 @@ def index(response):
 def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
-        print(f"respone {response.POST}", flush=True)
         if form.is_valid():
             new_user = form.save()
             new_user = authenticate(username=form.cleaned_data['username'],
@@ -62,6 +65,33 @@ def register(response):
 
     return render(response, "registration/register.html", {"form": form})
 
+
+@login_required(login_url='/login/')
+def search_results(response):   # This view has the search bar who is vulnerable to SQL injection
+    current_user = response.user
+    query = response.POST.get('search-bar')
+    if query:
+        # To exploit this input field, enter "t%' -- " in the search bar (without the quotes)
+        sql = f"SELECT * FROM webapp_costumer WHERE name LIKE '%{query}%' AND sales_person_id = {current_user.id};"
+    
+    try:
+        import mysql.connector
+
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="computersecurity"
+        )
+        cursor = mydb.cursor()
+        cursor.execute(sql)
+
+        results = cursor.fetchall()
+
+    except:
+        results = []
+
+    return render(response, "webApp/search_results.html", {'results': results})
 
 def password_change(response):
     if response.method == "POST":

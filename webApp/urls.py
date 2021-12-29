@@ -6,6 +6,7 @@ app_name = 'webApp'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('search_results/', views.search_results, name='search_results'),
     path('register/', views.register, name='register'),
     path('', include('django.contrib.auth.urls')),
     path('logout/', views.logout_user, name="logout"),
