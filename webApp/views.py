@@ -23,7 +23,8 @@ def index(response):
                 messages.success(response, f'Costumer info is invalid')
                 return redirect('/')
 
-            new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'), email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
+            new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'),
+                                    email=response.POST.get('costumer_email'), info=response.POST.get('costumer_info'))
             new_costumer.save()
 
             messages.success(response, f'Costumer {new_costumer.name} added successfully')
@@ -67,13 +68,13 @@ def register(response):
 
 
 @login_required(login_url='/login/')
-def search_results(response):   # This view has the search bar who is vulnerable to SQL injection
+def search_results(response):  # This view has the search bar who is vulnerable to SQL injection
     current_user = response.user
     query = response.POST.get('search-bar')
     if query:
-        # To exploit this input field, enter "t%' -- " in the search bar (without the quotes)
+        # To exploit this input field, enter "%' -- " in the search bar (without the quotes)
         sql = f"SELECT * FROM webapp_costumer WHERE name LIKE '%{query}%' AND sales_person_id = {current_user.id};"
-    
+
     try:
         import mysql.connector
 
@@ -92,6 +93,7 @@ def search_results(response):   # This view has the search bar who is vulnerable
         results = []
 
     return render(response, "webApp/search_results.html", {'results': results})
+
 
 def password_change(response):
     if response.method == "POST":
