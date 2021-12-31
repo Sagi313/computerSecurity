@@ -96,7 +96,6 @@ def search_results(response):  # This view has the search bar who is vulnerable 
     return render(response, "webApp/search_results.html", {'results': results})
 
 
-@login_required(login_url='/login/')
 class changepasswordsform(PasswordChangeView):
     class_form = PasswordChangeForm
 
