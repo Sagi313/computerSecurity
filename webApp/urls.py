@@ -10,5 +10,6 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('logout/', views.logout_user, name="logout"),
     path('password_changing/', views.password_change, name='password_change'),
+    path('chat/', views.chat, name='chat'),
 ]
 

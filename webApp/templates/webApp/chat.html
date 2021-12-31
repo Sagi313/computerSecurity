@@ -1,0 +1,24 @@
+{% extends 'webApp/base.html' %}
+
+{% block title %}
+Communication_LTD{% endblock %}
+{% block pageTitle %}Chat{% endblock %}
+{% block content %}
+    {% for msg in chat_msgs%}
+    <textarea class="form-control"  rows="3"
+                      maxlength='256'>
+    {{ msg.user_id }}
+    {{ msg.message_box }}
+    </textarea>
+    {% endfor %}
+    <form method="post" ,action="#">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="user_message"
+                      maxlength='256' required></textarea>
+        </div>
+        <button type="submit" class="btn btn-dark" name="submit" value='submit_data'>Submit</button>
+        <a href="/chat"><button type="button" class="btn btn-light" name="cancel" value='cancel_form'>Cancel</button></a>
+    </form>
+{% endblock %}

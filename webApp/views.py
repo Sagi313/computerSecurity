@@ -1,14 +1,13 @@
 from django.contrib.auth import authenticate, login , logout
-from django.http import response
+from django.contrib.auth.models import User
+from django.http import request, response
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from webApp.core import is_input_text_valid
-from .forms import RegisterForm , PasswordChangingForm
-from webApp.models import Costumer
+from .forms import RegisterForm , PasswordChangingForm 
+from webApp.models import Costumer, UserChatMessage
 from django.contrib.auth.decorators import login_required
-
-
 
 
 @login_required(login_url='/login/')
@@ -49,7 +48,7 @@ def index(response):
 
     return render(response, "webApp/index.html", {'costumers': relevant_costumers})
 
-
+ 
 def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
@@ -89,6 +88,15 @@ def password_change(response):
 def logout_user(request):
 	logout(request)
 	return redirect('login')
+
+def chat(response):
+    if response.method == "POST":
+        user=User.objects.get(id=response.user.id)
+        user_chat_msg=UserChatMessage(user_id=user , message_box=response.POST.get("user_message"))
+        user_chat_msg.save()
+
+    msg = UserChatMessage.objects.all()
+    return render(response, "webApp/chat.html", {'chat_msgs':msg})
 
 
 

@@ -1,7 +1,10 @@
-{% extends 'webApp/base.html' %} {% block title %}Communication_LTD{% endblock %}
-{% block pageTitle %}Costumer Management{% endblock %}
+{% extends 'webApp/base.html' %}
 
+{% block title %}
+Communication_LTD{% endblock %}
+{% block pageTitle %}Costumer Management{% endblock %}
 {% block content %}
+
 
     {% if messages %}
         {% for message in messages %}
@@ -12,7 +15,6 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-
 
     <form method="post" ,action="#">
         {% csrf_token %}
@@ -80,5 +82,5 @@
     <hr>
     <a href="/password_changing"><button class="btn btn-secondary">Change Password</button></a>
     <a href="/logout"><button class="btn btn-secondary">Logout</button></a>
-
+    <a href="/chat"><button class="btn btn-secondary">Chat</button></a>
 {% endblock %}
