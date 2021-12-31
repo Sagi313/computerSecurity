@@ -7,6 +7,9 @@ from webApp.core import is_input_text_valid
 from .forms import RegisterForm, PasswordChangingForm
 from webApp.models import Costumer
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 
 @login_required(login_url='/login/')
@@ -94,26 +97,13 @@ def search_results(response):  # This view has the search bar who is vulnerable 
 
     return render(response, "webApp/search_results.html", {'results': results})
 
+class changepasswordsform(PasswordChangeView):
+    class_form = PasswordChangeForm
 
-def password_change(response):
-    if response.method == "POST":
-        try:
-            form = PasswordChangingForm(response.POST)
-            print(f"respone {response.POST}", flush=True)
-            print(response.user, flush=True)
-            new_user = authenticate(username=response.user, password=response.POST.get('new_password'), )
-            login(response, new_user)
-            messages.success(response, f'Password changed succuessfuly. Please go back to main page')
-        except:
-            messages.error(response, f'Failed to change password')
-
-
-    else:
-        form = PasswordChangingForm(response.POST)
-
-    return render(response, "registration/change-password.html", {"form": form})
+def password_success(request):
+    return render(request,"registration/password_success.html")
 
 
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('/login')
