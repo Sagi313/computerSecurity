@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import response
-from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from webApp.core import is_input_text_valid
@@ -70,7 +69,6 @@ def register(response):
     return render(response, "registration/register.html", {"form": form})
 
 
-@login_required(login_url='/login/')
 def search_results(response):  # This view has the search bar who is vulnerable to SQL injection
     current_user = response.user
     query = response.POST.get('search-bar')
@@ -97,13 +95,18 @@ def search_results(response):  # This view has the search bar who is vulnerable 
 
     return render(response, "webApp/search_results.html", {'results': results})
 
+
+@login_required(login_url='/login/')
 class changepasswordsform(PasswordChangeView):
     class_form = PasswordChangeForm
 
+
+@login_required(login_url='/login/')
 def password_success(request):
-    return render(request,"registration/password_success.html")
+    return render(request, "registration/password_success.html")
 
 
+@login_required(login_url='/login/')
 def logout_user(request):
     logout(request)
     return redirect('/login')

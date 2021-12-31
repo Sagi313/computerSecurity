@@ -52,10 +52,9 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
-            {% if user.is_authenticated == True %}
             <a class="nav-link disabled">{{ user }}</a>
 
-            <form class="d-flex" method="post">
+            <form class="d-flex" method="post" action="/search_results/">
                 {% csrf_token %}
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                        name="search-bar">
@@ -63,7 +62,6 @@
                         value="search-bar-submit">Search
                 </button>
             </form>
-            {% endif %}
         </div>
     </div>
 </nav>
