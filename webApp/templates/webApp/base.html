@@ -13,7 +13,7 @@
     {% load static %}
     <title>{% block title %}Communication_LTD{% endblock %}</title>
     {% if user.is_authenticated == false %}
-        <meta http-equiv="refresh" content="1; URL=/login"/>
+    <meta http-equiv="refresh" content="1; URL=/login"/>
     {% endif %}
 </head>
 <link rel="stylesheet" href="{% static 'webApp/base.css' %}"/>
@@ -52,10 +52,18 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            {% if user.is_authenticated == True %}
+            <a class="nav-link disabled">{{ user }}</a>
+
+            <form class="d-flex" method="post">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       name="search-bar">
+                <button class="btn btn-outline-success" type="submit" name="search-bar-submit"
+                        value="search-bar-submit">Search
+                </button>
             </form>
+            {% endif %}
         </div>
     </div>
 </nav>
@@ -68,7 +76,7 @@
         <h1 class="page-title">{% block pageTitle %}{% endblock %}</h1>
         <hr/>
         {% if user.is_authenticated %}
-            {% block content %} {% endblock %}
+        {% block content %} {% endblock %}
         {% endif %}
 
         {% block public_content %} {% endblock %}
@@ -80,6 +88,7 @@
     </body>
 </div>
 
+<br>
 <footer class="bg-light text-center text-lg-start">
     <!-- Grid container -->
     <div class="container p-4">
@@ -88,11 +97,10 @@
             <!--Grid column-->
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Information</h5>
-
                 <p>
                     This site is part of the Computer-Security course project. It
                     Allows us to test various attack vectors and exploit the site.
-                    To see the vulnerabilities, checkout the documentaions
+                    To see the vulnerabilities, checkout the documentations
                 </p>
             </div>
             <!--Grid column-->
@@ -114,7 +122,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        <p class="text-dark">© 2020 Copyright: Sagi Buria, Lior Nissan, Viktor Dabush, Noa, Timor</p>
+        <p class="text-dark">© 2020 Copyright: Sagi Buria, Lior Nissan, Viktor Dabush, Noa Mishraki, Timor</p>
     </div>
     <!-- Copyright -->
 </footer>
