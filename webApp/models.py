@@ -16,5 +16,5 @@ class Costumer(models.Model):
 
 class UserChatMessage(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id= models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    message_box= models.CharField(max_length=256)
+    user_name= models.CharField(max_length=256,default="")
+    message_box= models.CharField(max_length=256,default="")
