@@ -127,8 +127,3 @@ def chat(response):
 
     msg = UserChatMessage.objects.all()
     return render(response, "webApp/chat.html", {'chat_msgs':msg})
-
-
-
-
-

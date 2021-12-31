@@ -13,8 +13,10 @@
         {% csrf_token %}
         {{ form|crispy }}
         <p>Don't have an account? Create one <a href="/register">here</a></p>
+        <p>Forget Your Password ? <a href="/reset_password">Click here</a></p>
         <button type="submit" class="btn btn-success">Login</button>
     </form>
+
 
     <img class="logo-img" src="{% static 'webApp/theme-img-small.png' %}" alt="theme-img">
 
