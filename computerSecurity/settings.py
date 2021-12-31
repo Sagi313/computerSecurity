@@ -35,7 +35,6 @@ ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = '/'  # URL redirecting after a successful authentication
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 # Application definition
