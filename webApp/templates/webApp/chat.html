@@ -4,7 +4,7 @@ Communication_LTD{% endblock %}
 {% block pageTitle %}Chat{% endblock %}
 {% block public_content %}
 
-{% autoescape off %}
+{% autoescape on %}
 <div class="form-control">
     {% for msg in chat_msgs%}
     <p>{{ msg.user_name }}: {{ msg.message_box }}</p>
