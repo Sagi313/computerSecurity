@@ -12,3 +12,9 @@ class Costumer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UserChatMessage(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_name = models.CharField(max_length=256, default="")
+    message_box = models.CharField(max_length=256, default="")

@@ -14,6 +14,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', auth_views.LoginView.as_view()),
     path('logout/', views.logout_user, name="logout"),
+    path('chat/', views.chat, name='chat'),
     path('password_changing/', views.changepasswordsform.as_view(template_name='registration/change-password.html', success_url=reverse_lazy('webApp:password_success')), name='password_change'),
     path('password_change_successfully/', views.password_success, name='password_success'),
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name='registration/reset_password.html', email_template_name ='registration/password_reset_email.txt',success_url=reverse_lazy('webApp:password_reset_done')), name='password_reset'),
