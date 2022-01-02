@@ -117,3 +117,6 @@ def chat(response):
         user_chat_msg.save()
     msg = UserChatMessage.objects.all()
     return render(response, "webApp/chat.html", {'chat_msgs': msg})
+
+def about(request):
+    return render(request, "webApp/about.html")
