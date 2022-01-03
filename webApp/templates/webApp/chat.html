@@ -4,6 +4,16 @@ Communication_LTD{% endblock %}
 {% block pageTitle %}Chat{% endblock %}
 {% block public_content %}
 
+{% if messages %}
+{% for message in messages %}
+    {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% elif message.tags == "error" %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endif %}
+{% endfor %}
+{% endif %}
+
 {% autoescape on %}
 <div class="form-control">
     {% for msg in chat_msgs%}
