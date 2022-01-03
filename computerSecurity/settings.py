@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import datetime
+import json
+with open("webApp/config/pass.json") as file:
+    rules = json.load(file)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +42,18 @@ LOGIN_REDIRECT_URL = '/'  # URL redirecting after a successful authentication
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGOUT_REDIRECT_URL = "/"
 
+
+AXES_ENABLED = True
+AXES_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME=datetime.timedelta(seconds=int(rules['cool_down_time']))
+AXES_ONLY_USER_FAILURES = True
+
+AUTHENTICATION_BACKENDS = [
+    # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesBackend',
+]
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +66,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'webApp',
     'crispy_forms',
+    'axes',
 
 ]
 
@@ -60,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'computerSecurity.urls'
@@ -92,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'computersecurity',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'רםםא',
         'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
