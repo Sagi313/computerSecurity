@@ -3,26 +3,8 @@
 
 {% block public_content %}
 
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == "success" %}
-                <div class="alert alert-success" role="alert">{{ message }}</div>
-            {% elif message.tags == "error" %}
-                <div class="alert alert-danger" role="alert">{{ message }}</div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-
     {% if results %}
         <table class="table">
-            {% comment %} <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Costumer name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Info</th>
-            </tr>
-            </thead> {% endcomment %}
             <tbody>
 
             {% for result in results %}

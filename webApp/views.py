@@ -89,11 +89,14 @@ def search_results(response):  # This view has the search bar who is vulnerable 
             database="computersecurity"
         )
         cursor = mydb.cursor()
-        cursor.execute(sql)
+        results = []
 
-        results = cursor.fetchall()
+        iterable = cursor.execute(sql, multi=True)  # Allows multi query, this way we can use UNION in our SQL Injection
+        for result in iterable:
+            results += (result.fetchall())
 
-    except:
+    except Exception as e:
+        print(e)
         results = []
 
     return render(response, "webApp/search_results.html", {'results': results})
