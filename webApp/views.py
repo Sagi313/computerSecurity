@@ -9,19 +9,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='/login/')
 def index(response):
     if response.method == 'POST':
         if response.POST.get("submit"):
-            if not is_input_text_valid(response.POST.get('costumer_name'), 256):
+            if not is_input_text_valid(response.POST.get('costumer_name'), 256, 1):
                 messages.success(response, f'Costumer name is invalid')
                 return redirect('/')
-            elif not is_input_text_valid(response.POST.get('costumer_email'), 256):
+            elif not is_input_text_valid(response.POST.get('costumer_email'), 256, 1):
                 messages.success(response, f'Costumer email is invalid')
                 return redirect('/')
-            elif not is_input_text_valid(response.POST.get('costumer_info'), 256):
+            elif not is_input_text_valid(response.POST.get('costumer_info'), 256, 1):
                 messages.success(response, f'Costumer info is invalid')
                 return redirect('/')
 
@@ -37,10 +39,12 @@ def index(response):
                     to_delete_id = key.split("_")[1]
                     to_delete_costumer = Costumer.objects.get(id=int(to_delete_id))
                     costumer_name = to_delete_costumer.name
-                    to_delete_costumer.delete()
+                    if to_delete_costumer.sales_person == response.user:
+                        to_delete_costumer.delete()
 
-                    messages.success(response, f'Costumer {costumer_name} was deleted')
-
+                        messages.success(response, f'Costumer {costumer_name} was deleted')
+                    else:
+                        messages.error(response, f"Your trying to do an action that you shouldn't")
         ### VULENARABLE INPUT FIELD ###
         if response.POST.get('search-bar-submit'):
             return search_results(response)
@@ -48,9 +52,8 @@ def index(response):
         return redirect('/')
 
     all_costumers = Costumer.objects.all()
-    relevant_costumers = [costumer for costumer in all_costumers if costumer.sales_person == response.user]
 
-    return render(response, "webApp/index.html", {'costumers': relevant_costumers})
+    return render(response, "webApp/index.html", {'costumers': all_costumers})
 
 
 def register(response):
@@ -113,6 +116,8 @@ def logout_user(request):
 
 def chat(response):
     if response.method == "POST":
+        if not is_input_text_valid(response.POST.get('user_message'), 256, 1):
+            messages.success(response, f'Message is invalid')
         user_chat_msg = UserChatMessage(user_name=response.user, message_box=response.POST.get("user_message"))
         user_chat_msg.save()
     msg = UserChatMessage.objects.all()
