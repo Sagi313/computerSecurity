@@ -18,13 +18,13 @@ def index(response):
     if response.method == 'POST':
         if response.POST.get("submit"):
             if not is_input_text_valid(response.POST.get('costumer_name'), 256, 1):
-                messages.success(response, f'Costumer name is invalid')
+                messages.error(response, f'Costumer name is invalid')
                 return redirect('/')
             elif not is_input_text_valid(response.POST.get('costumer_email'), 256, 1):
-                messages.success(response, f'Costumer email is invalid')
+                messages.error(response, f'Costumer email is invalid')
                 return redirect('/')
             elif not is_input_text_valid(response.POST.get('costumer_info'), 256, 1):
-                messages.success(response, f'Costumer info is invalid')
+                messages.error(response, f'Costumer info is invalid')
                 return redirect('/')
 
             new_costumer = Costumer(sales_person=response.user, name=response.POST.get('costumer_name'),
@@ -117,7 +117,7 @@ def logout_user(request):
 def chat(response):
     if response.method == "POST":
         if not is_input_text_valid(response.POST.get('user_message'), 256, 1):
-            messages.success(response, f'Message is invalid')
+            messages.error(response, f'Message is invalid')
         user_chat_msg = UserChatMessage(user_name=response.user, message_box=response.POST.get("user_message"))
         user_chat_msg.save()
     msg = UserChatMessage.objects.all()
