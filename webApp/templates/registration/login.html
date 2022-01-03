@@ -12,6 +12,12 @@
     <form method="post" class="from-group">
         {% csrf_token %}
         {{ form|crispy }}
+        <div class="input-group-append">
+            <input type="text" name="username" placeholder="Username..." class="form-control">
+        </div>
+        <div class="input-group-append">
+            <input type="password" name="password" placeholder="Password..." class="form-control">
+        </div>
         <p>Don't have an account? Create one <a href="/register">here</a></p>
         <p>Forget Your Password ? <a href="/reset_password">Click here</a></p>
         <button type="submit" class="btn btn-success">Login</button>

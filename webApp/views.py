@@ -128,3 +128,19 @@ def chat(response):
 
 def about(request):
     return render(request, "webApp/about.html")
+
+def loginPage(request):
+    if request.method == 'POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        if username in [user.username for user in User.objects.all()]:
+            user=authenticate(request ,username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('/')
+            else:
+                messages.error()
+    else:
+        print("hey")
+    context = {}
+    return render(request,'registration/login.html', context)
