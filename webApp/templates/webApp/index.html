@@ -20,6 +20,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Sales person</th>
                 <th scope="col">Customer name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Info</th>
@@ -27,22 +28,25 @@
             </tr>
             </thead>
             <tbody>
-
+{% autoescape off %}
             {% for costumer in costumers %}
 
                 <tr>
                     <th scope="row">{{ costumer.id }}</th>
+                    <td>{{ costumer.sales_person }}</td>
                     <td>{{ costumer.name }}</td>
                     <td>{{ costumer.email }}</td>
                     <td>{{ costumer.info }}</td>
-                    <td><input type="checkbox" class="form-check-input mt-0" name="delete-costumer_{{ costumer.id }}">
+                    <td>
+                        {% if user == costumer.sales_person %}
+                        <input type="checkbox" class="form-check-input mt-0" name="delete-costumer_{{ costumer.id }}">
+                        {% endif %}
                     </td>
                 </tr>
-
             {% endfor %}
             </tbody>
+{% endautoescape %}
         </table>
-
         </div>
         <button type="submit" class="btn btn-dark" name="delete_costumers" value='delete_costumers'>Delete Selected
         </button>
