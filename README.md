@@ -58,7 +58,11 @@ You can find all the vulnerabilites in the attached PDF file on the root dir
 
 **DREAD analysis**- We analyzed each vulnerabily using this model in the PDF file
 
+## Requirements
 
+- Python3
+- Pip3
+- MySQL server
 
 
 
