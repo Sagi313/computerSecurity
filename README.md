@@ -26,5 +26,10 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 6. Run the server `python manage.py runserver`
 
+7. Run the server with TLS `python manage.py runserver_plus --cert-file cert.pem --key-file key.pem`
+
+8. If you try to reset your password and you dont see the mail please check your Trash mail
+
+
 
 
