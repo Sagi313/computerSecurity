@@ -12,7 +12,7 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 ## How to install?
 
-1. Clone the GitHub repository to your local machine
+1. Clone the GitHub repository to your local machine (choose the tag you will to download)
 
 2. Install the required dependencies. Run the following: `pip install -r requirements.txt`
 
