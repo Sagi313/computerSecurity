@@ -16,7 +16,6 @@ class AuthHelper:
         self.rules = rules
 
     def validate(self, password, user=None):
-        print(4, flush=True)
         validate_pass(password, user)
 
     def get_help_text(self):
