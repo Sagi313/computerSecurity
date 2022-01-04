@@ -18,3 +18,8 @@ class UserChatMessage(models.Model):
     id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=256, default="")
     message_box = models.CharField(max_length=256, default="")
+
+
+class PasswordsHistory(models.Model):
+    user = models.CharField(max_length=256, null=True)
+    pwd = models.CharField(max_length=256)
