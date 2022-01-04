@@ -23,3 +23,4 @@ class UserLoginTry(models.Model):
     user_name = models.CharField(max_length=256, default="")
     counter_tries_login = models.IntegerField()
     time_last_try = models.DateTimeField(null=True)
+
