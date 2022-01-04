@@ -46,6 +46,18 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 ### SQL injection
 - http://127.0.0.1:8000/ and any other view, the vulnerable field is the 'Search' bar
 
+## STRIDE Analysis
+
+You can find all the vulnerabilites in the attached PDF file on the root dir
+
+## Bonus tasks
+
+**TLS protected**- The app can be used using TLS
+
+**XSS Vulenrability**- We made the some fields vulnerable to the XSS attack vector
+
+**DREAD analysis**- We analyzed each vulnerabily using this model in the PDF file
+
 
 
 
