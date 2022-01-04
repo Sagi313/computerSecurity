@@ -1,7 +1,11 @@
 import json
 import re
+
 from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
+from webApp.models import PasswordsHistory
+from django.contrib.auth.hashers import make_password, check_password
+
 
 with open("webApp/config/pass.json") as file:
     rules = json.load(file)
@@ -12,7 +16,8 @@ class AuthHelper:
         self.rules = rules
 
     def validate(self, password, user=None):
-        validate_pass(password)
+        print(4, flush=True)
+        validate_pass(password, user)
 
     def get_help_text(self):
         must_include = make_prettier_condition("must_include")
@@ -34,10 +39,28 @@ def replace_char(string_value: str):
     return string_value
 
 
-def validate_pass(password):
+def validate_pass(password, user):
     if len(password) < rules['len']:
         raise ValidationError(f"password must contain at least {rules['len']} characters", code='invalid')
     elif not all(re.search(i, password) for i in rules["must_include"]):
         raise ValidationError(f"password must include: {make_prettier_condition('must_include')} ", code='invalid')
     elif password in rules["dict_pass"]:
         raise ValidationError("common passwords are not allowed", code='invalid')
+    elif not check_pass_history(password, user):
+        raise ValidationError(f'New password must be different from the last {rules["history"]} password',
+                              code='invalid')
+    save_old_password(password, user)
+
+
+def check_pass_history(password, user):
+    pass_list = PasswordsHistory.objects.filter(user=user.username).order_by('-id')[:rules['history']][::-1]
+    for i in pass_list:
+        old_pass = i.pwd
+        if check_password(password,old_pass):
+            return False
+    return True
+
+
+def save_old_password(password, user):
+    PasswordsHistory.objects.get_or_create(user=user.username,
+                                           pwd=make_password(password))
