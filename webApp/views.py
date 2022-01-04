@@ -18,6 +18,7 @@ import json
 with open("webApp/config/pass.json") as file:
     rules = json.load(file)
 
+
 @login_required(login_url='/login/')
 def index(response):
     if response.method == 'POST':
@@ -66,7 +67,7 @@ def register(response):
         form = RegisterForm(response.POST)
         if form.is_valid():
             new_user = form.save()
-            username=form.cleaned_data['username']
+            username = form.cleaned_data['username']
             new_user = authenticate(username=username,
                                     password=form.cleaned_data['password1'], )
             user_login = UserLoginTry(user_name=username, counter_tries_login=0, time_last_try=datetime.datetime.now())
@@ -131,40 +132,49 @@ def chat(response):
             messages.error(response, f'Message is invalid')
         user_chat_msg = UserChatMessage(user_name=response.user, message_box=response.POST.get("user_message"))
         user_chat_msg.save()
+
+        return redirect("/chat")
+
     msg = UserChatMessage.objects.all()
     return render(response, "webApp/chat.html", {'chat_msgs': msg})
+
 
 def about(request):
     return render(request, "webApp/about.html")
 
-def loginPage(request):
+
+def login_page(request):
     if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         if username in [user.username for user in User.objects.all()]:
-            user=authenticate(request ,username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user:
                 user_check = UserLoginTry.objects.get(user_name=username)
-                if user_check.counter_tries_login < rules["Max_retries"] :
-                    user_check.counter_tries_login=0
+                if user_check.counter_tries_login < rules["Max_retries"]:
+                    user_check.counter_tries_login = 0
                     user_check.save()
                     login(request, user)
                     return redirect('/')
                 else:
-                    lock_down_seconds=rules["lock_down_time"]
-                    time_to_lock=user_check.time_last_try + datetime.timedelta(seconds=lock_down_seconds)
-                    if (timezone.now()+ datetime.timedelta(hours=2) - user_check.time_last_try) >datetime.timedelta(seconds=lock_down_seconds) :
-                        user_check.counter_tries_login=0
+                    lock_down_seconds = rules["lock_down_time"]
+                    time_to_lock = user_check.time_last_try + datetime.timedelta(seconds=lock_down_seconds)
+                    if (timezone.now() + datetime.timedelta(hours=2) - user_check.time_last_try) > datetime.timedelta(
+                            seconds=lock_down_seconds):
+                        user_check.counter_tries_login = 0
                         user_check.save()
                         login(request, user)
                         return redirect('/')
                     messages.error(request, f'Please wait until {time_to_lock} ')
             else:
-                user=UserLoginTry.objects.get(user_name=username)
+                user = UserLoginTry.objects.get(user_name=username)
                 user.counter_tries_login = user.counter_tries_login + 1
-                user.time_last_try=datetime.datetime.now()
+                user.time_last_try = datetime.datetime.now()
                 user.save()
                 messages.error(request, f'Incorrect password for user {username}')
         else:
-            messages.error(request, f'User {username} does not exsist')
-    return render(request,'registration/login.html')
+            messages.error(request, f'User {username} does not exist')
+
+        return redirect("/login")
+
+    return render(request, 'registration/login.html')
