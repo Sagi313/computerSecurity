@@ -4,14 +4,19 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from webApp.core import is_input_text_valid
 from .forms import RegisterForm, PasswordChangingForm
-from webApp.models import Costumer, UserChatMessage
+from webApp.models import Costumer, UserChatMessage, UserLoginTry
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+import datetime
+from django.utils import timezone
+import json
 
+with open("webApp/config/pass.json") as file:
+    rules = json.load(file)
 
 @login_required(login_url='/login/')
 def index(response):
@@ -61,8 +66,11 @@ def register(response):
         form = RegisterForm(response.POST)
         if form.is_valid():
             new_user = form.save()
-            new_user = authenticate(username=form.cleaned_data['username'],
+            username=form.cleaned_data['username']
+            new_user = authenticate(username=username,
                                     password=form.cleaned_data['password1'], )
+            user_login = UserLoginTry(user_name=username, counter_tries_login=0, time_last_try=datetime.datetime.now())
+            user_login.save()
             login(response, new_user)
 
             return redirect("/")
@@ -119,7 +127,7 @@ def logout_user(request):
 
 def chat(response):
     if response.method == "POST":
-        if not is_input_text_valid(response.POST.get('user_message'), 256, 1):
+        if not is_input_text_valid(response.POST.get('user_message'), 100, 1):
             messages.error(response, f'Message is invalid')
         user_chat_msg = UserChatMessage(user_name=response.user, message_box=response.POST.get("user_message"))
         user_chat_msg.save()
@@ -136,11 +144,27 @@ def loginPage(request):
         if username in [user.username for user in User.objects.all()]:
             user=authenticate(request ,username=username, password=password)
             if user:
-                login(request, user)
-                return redirect('/')
+                user_check = UserLoginTry.objects.get(user_name=username)
+                if user_check.counter_tries_login < rules["Max_retries"] :
+                    user_check.counter_tries_login=0
+                    user_check.save()
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    lock_down_seconds=rules["lock_down_time"]
+                    time_to_lock=user_check.time_last_try + datetime.timedelta(seconds=lock_down_seconds)
+                    if (timezone.now()+ datetime.timedelta(hours=2) - user_check.time_last_try) >datetime.timedelta(seconds=lock_down_seconds) :
+                        user_check.counter_tries_login=0
+                        user_check.save()
+                        login(request, user)
+                        return redirect('/')
+                    messages.error(request, f'Please wait until {time_to_lock} ')
             else:
-                messages.error()
-    else:
-        print("hey")
-    context = {}
-    return render(request,'registration/login.html', context)
+                user=UserLoginTry.objects.get(user_name=username)
+                user.counter_tries_login = user.counter_tries_login + 1
+                user.time_last_try=datetime.datetime.now()
+                user.save()
+                messages.error(request, f'Incorrect password for user {username}')
+        else:
+            messages.error(request, f'User {username} does not exsist')
+    return render(request,'registration/login.html')

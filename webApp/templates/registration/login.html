@@ -9,12 +9,24 @@
 
 
 {% block public_content %}
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% elif message.tags == "error" %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
     <form method="post" class="from-group">
         {% csrf_token %}
         {{ form|crispy }}
         <div class="input-group-append">
             <input type="text" name="username" placeholder="Username..." class="form-control">
         </div>
+         <br>
         <div class="input-group-append">
             <input type="password" name="password" placeholder="Password..." class="form-control">
         </div>
