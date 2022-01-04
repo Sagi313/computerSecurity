@@ -24,3 +24,7 @@ class UserLoginTry(models.Model):
     counter_tries_login = models.IntegerField()
     time_last_try = models.DateTimeField(null=True)
 
+class PasswordsHistory(models.Model):
+    user = models.CharField(max_length=256, null=True)
+    pwd = models.CharField(max_length=256)
+    
