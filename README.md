@@ -34,7 +34,9 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 ## Touble Shooting
 
-If you try to reset your password and you don't see an email please check your Spam inbox.
+- If you try to reset your password and you don't see an email please check your Spam inbox.
+- After changing the pass.json conf file, you need to rerun the server inorder for the changes to apply.
+
 
 ## Vulenrable fields
 ### XSS
