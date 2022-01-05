@@ -2,10 +2,9 @@ import json
 import re
 
 from django.utils.translation import gettext as _
-from django.core.exceptions import ValidationError
+from django.core.exceptions import FieldError, ValidationError
 from webApp.models import PasswordsHistory
 from django.contrib.auth.hashers import make_password, check_password
-
 
 with open("webApp/config/pass.json") as file:
     rules = json.load(file)
@@ -16,8 +15,11 @@ class AuthHelper:
         self.rules = rules
 
     def validate(self, password, user=None):
+        is_valid_names(user)
         validate_pass(password, user)
+ 
 
+        
     def get_help_text(self):
         must_include = make_prettier_condition("must_include")
         return _(f"Minimum len : {self.rules['len']},  \n "
@@ -63,3 +65,12 @@ def check_pass_history(password, user):
 def save_old_password(password, user):
     PasswordsHistory.objects.get_or_create(user=user.username,
                                            pwd=make_password(password))
+
+def is_valid_names(user):
+    if not user.first_name.isalpha():
+        raise ValidationError(f"First name not valid", code='invalid')
+    if not user.last_name.isalpha():
+        raise ValidationError(f"Last name not valid", code='invalid')
+    if not (user.email.find('@') and user.email.find('.')):
+        if not user.email.find('@') < user.email.find('.'):
+            raise ValidationError(f"Email not valid", code='invalid')
