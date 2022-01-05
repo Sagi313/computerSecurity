@@ -10,12 +10,14 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 Our site has 2 versions:
 
-### Vulnerable version V3.0
+**Vulnerable version V3.0**
 
+Vulnerable to XSS and SQLI
 You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v3.0)
 
-### Safe version V3.1
+**Safe version V3.1**
 
+Has no known vulnerabilities
 You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1)
 
 ## How to run simple?
