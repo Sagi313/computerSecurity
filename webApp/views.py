@@ -70,7 +70,8 @@ def register(response):
             username = form.cleaned_data['username']
             new_user = authenticate(username=username,
                                     password=form.cleaned_data['password1'], )
-            user_login = UserLoginTry(user_name=username, counter_tries_login=0, time_last_try=datetime.datetime.now())
+            user_login = UserLoginTry(user_name=username, counter_tries_login=0,
+                                      time_last_try=timezone.now() + datetime.timedelta(hours=2))
             user_login.save()
             login(response, new_user)
 
@@ -148,6 +149,7 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         if username in [user.username for user in User.objects.all()]:
+
             user = authenticate(request, username=username, password=password)
             if user:
                 user_check = UserLoginTry.objects.get(user_name=username)
@@ -165,11 +167,11 @@ def login_page(request):
                         user_check.save()
                         login(request, user)
                         return redirect('/')
-                    messages.error(request, f'Please wait until {time_to_lock} ')
+                    messages.error(request, "Please wait until {:%d, %b %Y, %H:%M:%S}".format(time_to_lock))
             else:
                 user = UserLoginTry.objects.get(user_name=username)
                 user.counter_tries_login = user.counter_tries_login + 1
-                user.time_last_try = datetime.datetime.now()
+                user.time_last_try = timezone.now() + datetime.timedelta(hours=2)
                 user.save()
                 messages.error(request, f'Incorrect password for user {username}')
         else:
