@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Costumer(models.Model):
     id = models.AutoField(primary_key=True)
@@ -18,11 +19,13 @@ class UserChatMessage(models.Model):
     user_name = models.CharField(max_length=256, default="")
     message_box = models.CharField(max_length=256, default="")
 
+
 class UserLoginTry(models.Model):
     id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=256, default="")
     counter_tries_login = models.IntegerField()
     time_last_try = models.DateTimeField(null=True)
+
 
 class PasswordsHistory(models.Model):
     user = models.CharField(max_length=256, null=True)
