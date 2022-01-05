@@ -87,29 +87,9 @@ def register(response):
 def search_results(response):  # This view has the search bar who is vulnerable to SQL injection
     current_user = response.user
     query = response.POST.get('search-bar')
-    if query:
-        # To exploit this input field, enter "%' -- " in the search bar (without the quotes)
-        sql = f"SELECT * FROM webapp_costumer WHERE name LIKE '%{query}%' AND sales_person_id = {current_user.id};"
-
-    try:
-        import mysql.connector
-
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="computersecurity"
-        )
-        cursor = mydb.cursor()
-        results = []
-
-        iterable = cursor.execute(sql, multi=True)  # Allows multi query, this way we can use UNION in our SQL Injection
-        for result in iterable:
-            results += (result.fetchall())
-
-    except Exception as e:
-        print(e)
-        results = []
+    results = []
+    for result in list(Costumer.objects.filter(name=query, sales_person_id=current_user.id)):
+        results.append(result.__dict__)
 
     return render(response, "webApp/search_results.html", {'results': results})
 

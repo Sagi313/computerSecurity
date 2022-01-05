@@ -14,7 +14,7 @@ Communication_LTD{% endblock %}
 {% endfor %}
 {% endif %}
 
-{% autoescape off %}
+{% autoescape on %}
 <div class="form-control">
     {% for msg in chat_msgs%}
     <p>{{ msg.user_name }}: {{ msg.message_box }}</p>
