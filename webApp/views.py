@@ -149,25 +149,20 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         if username in [user.username for user in User.objects.all()]:
-
+            user_check = UserLoginTry.objects.get(user_name=username)
+            lock_down_seconds = rules["lock_down_time"]
+            time_to_lock = user_check.time_last_try + datetime.timedelta(seconds=lock_down_seconds)
+            if (timezone.now() + datetime.timedelta(hours=2) - user_check.time_last_try) < datetime.timedelta(
+                            seconds=lock_down_seconds) and user_check.counter_tries_login > rules["Max_retries"]:
+                messages.error(request, "Please wait until {:%d, %b %Y, %H:%M:%S}".format(time_to_lock))
+                return redirect('/')
             user = authenticate(request, username=username, password=password)
             if user:
-                user_check = UserLoginTry.objects.get(user_name=username)
                 if user_check.counter_tries_login < rules["Max_retries"]:
                     user_check.counter_tries_login = 0
                     user_check.save()
                     login(request, user)
                     return redirect('/')
-                else:
-                    lock_down_seconds = rules["lock_down_time"]
-                    time_to_lock = user_check.time_last_try + datetime.timedelta(seconds=lock_down_seconds)
-                    if (timezone.now() + datetime.timedelta(hours=2) - user_check.time_last_try) > datetime.timedelta(
-                            seconds=lock_down_seconds):
-                        user_check.counter_tries_login = 0
-                        user_check.save()
-                        login(request, user)
-                        return redirect('/')
-                    messages.error(request, "Please wait until {:%d, %b %Y, %H:%M:%S}".format(time_to_lock))
             else:
                 user = UserLoginTry.objects.get(user_name=username)
                 user.counter_tries_login = user.counter_tries_login + 1
