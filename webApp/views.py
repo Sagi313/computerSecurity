@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import response
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from webApp.core import is_input_text_valid
+from webApp.core import is_input_text_valid, is_valid_name, is_valid_email
 from .forms import RegisterForm, PasswordChangingForm
 from webApp.models import Costumer, UserChatMessage, UserLoginTry
 from django.contrib.auth.decorators import login_required
@@ -23,10 +23,10 @@ with open("webApp/config/pass.json") as file:
 def index(response):
     if response.method == 'POST':
         if response.POST.get("submit"):
-            if not is_input_text_valid(response.POST.get('costumer_name'), 256, 1):
+            if not is_input_text_valid(response.POST.get('costumer_name'), 256, 1) or is_valid_name(response.POST.get('costumer_name')) == False:
                 messages.error(response, f'Costumer name is invalid')
                 return redirect('/')
-            elif not is_input_text_valid(response.POST.get('costumer_email'), 256, 1):
+            elif not is_input_text_valid(response.POST.get('costumer_email'), 256, 1) or is_valid_email(response.POST.get('costumer_email')) == False:
                 messages.error(response, f'Costumer email is invalid')
                 return redirect('/')
             elif not is_input_text_valid(response.POST.get('costumer_info'), 256, 1):
