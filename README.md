@@ -6,6 +6,18 @@
 
 This project is a dummy telecommunication site that is vulnerable to SQL injection and XSS attacks. This was made to demonstrate the power of those attack vector. 
 
+## Versions
+
+Our site has 2 versions:
+
+### Vulnerable version V3.0
+
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v3.0)
+
+### Safe version V3.1
+
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1)
+
 ## How to run simple?
 
 *********** NOA WILL UPDATE ***************
