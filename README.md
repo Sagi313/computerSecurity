@@ -20,9 +20,6 @@ You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v3.0
 Has no known vulnerabilities
 You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1)
 
-## How to run simple?
-
-*********** NOA WILL UPDATE ***************
 
 ## How to install?
 
