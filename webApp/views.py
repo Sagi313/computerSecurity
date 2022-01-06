@@ -1,15 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import response
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from webApp.core import is_input_text_valid, is_valid_name, is_valid_email
-from .forms import RegisterForm, PasswordChangingForm
+from .forms import RegisterForm
 from webApp.models import Costumer, UserChatMessage, UserLoginTry
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 import datetime
 from django.utils import timezone
@@ -24,11 +21,11 @@ def index(response):
     if response.method == 'POST':
         if response.POST.get("submit"):
             if (not is_input_text_valid(response.POST.get('costumer_name'), 256, 1)) or (
-            not is_valid_name(response.POST.get('costumer_name'))):
+                    not is_valid_name(response.POST.get('costumer_name'))):
                 messages.error(response, f'Costumer name is invalid')
                 return redirect('/')
             elif (not is_input_text_valid(response.POST.get('costumer_email'), 256, 1)) or (
-            not is_valid_email(response.POST.get('costumer_email'))):
+                    not is_valid_email(response.POST.get('costumer_email'))):
                 messages.error(response, f'Costumer email is invalid')
                 return redirect('/')
             elif not is_input_text_valid(response.POST.get('costumer_info'), 256, 1):
@@ -68,7 +65,7 @@ def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
         if form.is_valid():
-            new_user = form.save()
+            form.save()
             username = form.cleaned_data['username']
             new_user = authenticate(username=username,
                                     password=form.cleaned_data['password1'], )
