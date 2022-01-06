@@ -6,7 +6,7 @@ def is_input_text_valid(text, max_length, min_length):
 
 
 def is_valid_name(name):
-    return name.isalpha()
+    return name.replace(' ', '').isalpha()
 
 
 def is_valid_email(email):
