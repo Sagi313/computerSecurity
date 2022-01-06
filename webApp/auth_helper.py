@@ -1,10 +1,10 @@
 import json
 import re
-
 from django.utils.translation import gettext as _
-from django.core.exceptions import FieldError, ValidationError
+from django.core.exceptions import ValidationError
 from webApp.models import PasswordsHistory
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
 
 with open("webApp/config/pass.json") as file:
     rules = json.load(file)
@@ -15,11 +15,9 @@ class AuthHelper:
         self.rules = rules
 
     def validate(self, password, user=None):
-        is_valid_names(user)
+        is_valid_register(user)
         validate_pass(password, user)
- 
 
-        
     def get_help_text(self):
         must_include = make_prettier_condition("must_include")
         return _(f"Minimum len : {self.rules['len']},  \n "
@@ -57,7 +55,7 @@ def check_pass_history(password, user):
     pass_list = PasswordsHistory.objects.filter(user=user.username).order_by('-id')[:rules['history']][::-1]
     for i in pass_list:
         old_pass = i.pwd
-        if check_password(password,old_pass):
+        if check_password(password, old_pass):
             return False
     return True
 
@@ -66,7 +64,10 @@ def save_old_password(password, user):
     PasswordsHistory.objects.get_or_create(user=user.username,
                                            pwd=make_password(password))
 
-def is_valid_names(user):
+
+def is_valid_register(user):
+    if user.username in [user.username for user in User.objects.all()]:
+        raise ValidationError(f"User is already been taken", code='invalid')
     if not user.first_name.isalpha():
         raise ValidationError(f"First name not valid", code='invalid')
     if not user.last_name.isalpha():
@@ -74,3 +75,5 @@ def is_valid_names(user):
     if not (user.email.find('@') and user.email.find('.')):
         if not user.email.find('@') < user.email.find('.'):
             raise ValidationError(f"Email not valid", code='invalid')
+    if user.email in [user.email for user in User.objects.all()]:
+        raise ValidationError(f"Email is already been used", code='invalid')
