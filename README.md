@@ -49,6 +49,7 @@ This can also be found on branch `SafeVersion`
 - If you try to reset your password and you don't see an email please check your Spam inbox.
 - After changing the pass.json conf file, you need to rerun the server inorder for the changes to apply.
 - HTTPS might take some time to reload. Be patient. 
+- If the HTTPS version doesn't load properly (Time out error), try to delete your browser cookies.
 
 ## Vulenrable fields
 ### XSS
