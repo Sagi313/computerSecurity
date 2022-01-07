@@ -66,8 +66,6 @@ def save_old_password(password, user):
 
 
 def is_valid_register(user):
-    if user.username in [user.username for user in User.objects.all()]:
-        raise ValidationError(f"User is already been taken", code='invalid')
     if not user.first_name.replace(' ', '').isalpha():
         raise ValidationError(f"First name not valid", code='invalid')
     if not user.last_name.replace(' ', '').isalpha():
@@ -75,5 +73,3 @@ def is_valid_register(user):
     if not (user.email.find('@') and user.email.find('.')):
         if not user.email.find('@') < user.email.find('.'):
             raise ValidationError(f"Email not valid", code='invalid')
-    if user.email in [user.email for user in User.objects.all()]:
-        raise ValidationError(f"Email is already been used", code='invalid')

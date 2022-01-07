@@ -10,16 +10,17 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 Our site has 2 versions:
 
-**Vulnerable version V3.0**
+**Vulnerable version V4.0**
 
 Vulnerable to XSS and SQLI
-You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v3.0)
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/releases/tag/v4.0)
+This can also be found on branch `mater`
 
-**Safe version V3.1**
+**Safe version V4.1**
 
 Has no known vulnerabilities
-You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1)
-
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/releases/tag/v4.1)
+This can also be found on branch `SafeVersion`
 
 ## How to install?
 
@@ -36,11 +37,10 @@ You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1
    'USER': 'root',
    'PASSWORD': 'root',
    ```
-5. Create a database scheme in your MySQL server called `computersecurity`
 
-6. Migrate all the DBs `python manage.py makemigrations` and then `python manage.py migrate`
+5. Migrate all the DBs `python manage.py makemigrations` and then `python manage.py migrate`
 
-7. Run the server: 
+6. Run the server: 
 - Without TLS (get the v3.0 tag): `python manage.py runserver` and go to http://127.0.0.1:8000/
 - With TLS (get the v3.1 tag): `python manage.py runserver_plus --cert-file cert.pem --key-file key.pem` and go to https://127.0.0.1:8000/
 
@@ -49,11 +49,12 @@ You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/V3.1
 - If you try to reset your password and you don't see an email please check your Spam inbox.
 - After changing the pass.json conf file, you need to rerun the server inorder for the changes to apply.
 - HTTPS might take some time to reload. Be patient. 
+- If the HTTPS version doesn't load properly (Time out error), try to delete your browser cookies.
 
 ## Vulenrable fields
 ### XSS
-- http://127.0.0.1:8000/chat/ The 'message field'
-- http://127.0.0.1:8000/ The 'Customer name' and 'Info' fields
+- http://127.0.0.1:8000/chat/ The 'message' field
+- http://127.0.0.1:8000/ The 'Info' field
 
 ### SQL injection
 - http://127.0.0.1:8000/ and any other view, the vulnerable field is the 'Search' bar
