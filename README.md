@@ -10,16 +10,16 @@ This project is a dummy telecommunication site that is vulnerable to SQL injecti
 
 Our site has 2 versions:
 
-**Vulnerable version V4.0**
+**Vulnerable version V4.2**
 
 Vulnerable to XSS and SQLI
-You can download it [HERE](https://github.com/Sagi313/computerSecurity/releases/tag/v4.0)
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v4.2)
 This can also be found on branch `mater`
 
-**Safe version V4.1**
+**Safe version V4.3**
 
 Has no known vulnerabilities
-You can download it [HERE](https://github.com/Sagi313/computerSecurity/releases/tag/v4.1)
+You can download it [HERE](https://github.com/Sagi313/computerSecurity/tree/v4.3)
 This can also be found on branch `SafeVersion`
 
 ## How to install?
